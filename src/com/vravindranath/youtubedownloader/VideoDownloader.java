@@ -12,25 +12,16 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-public class VideoDownloader {
+import android.os.AsyncTask;
+import android.util.Log;
+
+public class VideoDownloader extends AsyncTask<String, Void, Void>{
 	private static final String YOUTUBE_WATCH_URL_PREFIX = "http://www.youtube.com/watch?v=";
-	
-	public VideoDownloader(String url) {
-		try {
-			String htmlContent = getHTMLString(url);
-			String downloadUrl = getDownloadUrlFromHtmlContent(htmlContent);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	private String TAG = "VideoDownloader";
 	
 	private String getDownloadUrlFromHtmlContent(String htmlContent) {
 		String downloadUrl = null;
-		String[] videoIdMatches = htmlContent.split(/\"video_id\":\s*\"([^\"]+)\"/);
+//		String[] videoIdMatches = htmlContent.split(/\"video_id\":\s*\"([^\"]+)\"/);
 		return downloadUrl;
 	}
 	
@@ -45,6 +36,7 @@ public class VideoDownloader {
 		StringBuilder str = new StringBuilder();
 		String line = null;
 		while((line = reader.readLine()) != null) {
+			Log.i(TAG , line);
 		    str.append(line);
 		}
 		stream.close();
@@ -60,5 +52,20 @@ public class VideoDownloader {
 		indexOfAnd = videoId.indexOf('&');
 		videoId = videoId.substring(0, indexOfAnd);
 		return videoId;
+	}
+
+	@Override
+	protected Void doInBackground(String... params) {
+		try {
+			String htmlContent = getHTMLString(params[0]);
+//			String downloadUrl = getDownloadUrlFromHtmlContent(htmlContent);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
